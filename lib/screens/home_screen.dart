@@ -10,7 +10,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const twentySecondMinutes = 1500;
+  static const twentySecondMinutes = 10;
   int totalSeconds = twentySecondMinutes;
   int totalPomodoro = 0;
   bool isRunning = false;
@@ -45,6 +45,15 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void onResetPressed() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+      totalSeconds = twentySecondMinutes;
+      totalPomodoro = 0;
+    });
+  }
+
   String format(int seconds) {
     var duration = Duration(seconds: seconds);
     return duration.toString().split(".").first.substring(2, 7);
@@ -71,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           Flexible(
-            flex: 3,
+            flex: 2,
             child: Center(
               child: IconButton(
                 onPressed: isRunning ? onPausePressed : onStartPressed,
@@ -84,6 +93,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+          ),
+          Center(
+              child: IconButton(
+            iconSize: 30,
+            color: Theme.of(context).cardColor,
+            onPressed: onResetPressed,
+            icon: const Icon(
+              Icons.restart_alt_rounded,
+            ),
+          )),
+          const SizedBox(
+            height: 20,
           ),
           Flexible(
             flex: 1,
